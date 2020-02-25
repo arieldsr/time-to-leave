@@ -9,6 +9,8 @@ const defaultPreferences = {
     'hide-non-working-days': false,
     'hours-per-day': '08:00',
     'notification': true,
+    'repetition': true,
+    'notifications-interval': '00:05',
     'start-at-login': false,
     'theme': 'light',
     'update-remind-me-after' : '2019-01-01',
@@ -85,6 +87,7 @@ function initPreferencesFileIfNotExistsOrInvalid() {
         var value = derivedPrefs[key];
         switch (key) {
         // Handle Time Inputs
+        case 'notifications-interval':
         case 'hours-per-day': {
             if (!validateTime(value)) {
                 derivedPrefs[key] = defaultPreferences[key];
@@ -96,6 +99,7 @@ function initPreferencesFileIfNotExistsOrInvalid() {
         case 'close-to-tray':
         case 'hide-non-working-days':
         case 'notification':
+        case 'repetition':
         case 'start-at-login':
         case 'working-days-monday':
         case 'working-days-tuesday':

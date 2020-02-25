@@ -40,7 +40,7 @@ ipcRenderer.on('PREFERENCE_SAVED', function(event, inputs) {
  * Returns true if the notification is enabled in preferences.
  */
 function notificationIsEnabled() {
-    return preferences['notification'] === 'enabled';
+    return preferences['notification'];
 }
 
 /*
@@ -726,7 +726,7 @@ function notifyTimeToLeave() {
          * How many minutes should pass before the Time-To-Leave notification should be presented again.
          * @type {number} Minutes post the clockout time
          */
-        const notificationInterval = 5;
+        const notificationInterval = hourToMinutes(preferences['notifications-interval']);
         var now = new Date();
         var curTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
 
@@ -734,7 +734,7 @@ function notifyTimeToLeave() {
         var minutesDiff = hourToMinutes(subtractTime(timeToLeave, curTime));
         var isRepeatingInterval = curTime > timeToLeave && (minutesDiff % notificationInterval === 0);
 
-        if (curTime === timeToLeave || isRepeatingInterval) {
+        if (curTime === timeToLeave || (isRepeatingInterval && preferences['repetition'])) {
             notify('Hey there! I think it\'s time to leave.');
         }
     }

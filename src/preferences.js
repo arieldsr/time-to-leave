@@ -16,7 +16,7 @@ $(() => {
     preferences[theme] = selectedThemeOption;
     document.querySelector('html').setAttribute('data-theme', selectedThemeOption);
 
-    var inputs = document.getElementsByTagName('input');
+    let inputs = document.getElementsByTagName('input');
 
     $('input[type="checkbox"]').change(function() {
         preferences[this.name] = this.checked;
@@ -34,7 +34,8 @@ $(() => {
         applyTheme(this.value);
     });
 
-    for (var i = 0; i < inputs.length; i++) {
+
+    for (let i = 0; i < inputs.length; i++) {
         let input = inputs[i];
         if (inputs[i].type === 'checkbox') {
             if (input.name in usersStyles) {
@@ -48,4 +49,22 @@ $(() => {
             preferences[input.name] = input.value;
         }
     }
+
+    const notification = $(document.getElementById('notification'));
+    const repetition = $(document.getElementById('repetition'));
+    const notificationsInterval = $(document.getElementById('notifications-interval'));
+
+    repetition.prop('disabled', !notification.is(':checked'));
+    repetition.prop('checked', notification.is(':checked') && usersStyles['repetition']);
+    notificationsInterval.prop('disabled', !repetition.is(':checked'));
+
+    notification.change(function() {
+        repetition.prop('disabled', !notification.is(':checked'));
+        repetition.prop('checked', notification.is(':checked') && usersStyles['repetition']);
+        notificationsInterval.prop('disabled', !repetition.is(':checked'));
+    });
+
+    repetition.change(function() {
+        notificationsInterval.prop('disabled', !repetition.is(':checked'));
+    });
 });
